@@ -1,9 +1,23 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
+import { GetItem } from '../api/itemApi'
 
+const Item = () => {
 
-const DataAdmin = () => {
+    const getAllData = async () => {
+        try {
+            const response = await GetItem(1, 5)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getAllData()
+    }, [])
+
     return (
         <Adminpanel>
             <h2 className="mb-6 text-2xl font-semibold text-gray-700">Data Admin</h2>
@@ -63,4 +77,4 @@ const DataAdmin = () => {
     )
 }
 
-export default DataAdmin
+export default Item
