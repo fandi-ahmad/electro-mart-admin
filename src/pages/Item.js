@@ -25,6 +25,18 @@ const Item = () => {
         console.log(itemList);
     }, [itemList])
 
+    const limitChar = (params, value) => {
+        if (params.length > value) {
+            return params.slice(0, value) + " ...";
+        } else {
+            return params;
+        }
+    }
+
+    const formatNumber = (number) => {
+        return Number(number).toLocaleString();
+    };
+
     return (
         <Adminpanel>
             <h2 className="mb-6 text-2xl font-semibold text-gray-700">Data Admin</h2>
@@ -36,7 +48,7 @@ const Item = () => {
                         <thead>
                             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                                 <th className="px-4 py-3">no</th>
-                                <th className="px-4 py-3">item iame</th>
+                                <th className="px-4 py-3">item name</th>
                                 <th className="px-4 py-3">price</th>
                                 <th className="px-4 py-3">image</th>
                                 <th className="px-4 py-3">description</th>
@@ -49,11 +61,11 @@ const Item = () => {
                                     <tr key={item.id} className="text-gray-700 ">
                                         <td className="px-4 py-3 text-sm">{index+1}</td>
                                         <td className="px-4 py-3">
-                                            <p className="font-semibold">{item.item_name}</p>
+                                            <p className="font-semibold">{limitChar(item.item_name, 20)}</p>
                                         </td>
-                                        <td className="px-4 py-3 text-sm">{item.price}</td>
+                                        <td className="px-4 py-3 text-sm">Rp {formatNumber(item.price)}</td>
                                         <td className="px-4 py-3 text-sm">{item.image}</td>
-                                        <td className="px-4 py-3 text-sm">{item.description}</td>
+                                        <td className="px-4 py-3 text-sm">{limitChar(item.description, 30)}</td>
                                         <td className="px-4 py-3">
                                             <button htmlFor="upsert" className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-blue-700 hover:text-blue-800 focus:outline-none mr-4'>
                                                 <FontAwesomeIcon icon={faPenToSquare} />
