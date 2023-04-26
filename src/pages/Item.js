@@ -122,14 +122,13 @@ const Item = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
+                {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
                     <span className="flex items-center col-span-3">
                         Showing 21-30 of 100
                     </span>
                     <span className="col-span-2"></span>
-                    {/* <!-- Pagination --> */}
                     <Pagination/>
-                </div>
+                </div> */}
             </main>
 
              {/* ===== upsert modal ===== */}
