@@ -4,10 +4,19 @@ import { Adminpanel } from '../layouts/Adminpanel'
 import { GetItem } from '../api/itemApi'
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { BaseModal, openModal, closeModal } from '../components/BaseModal'
+import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
 
 const Item = () => {
 
     const [itemList, setItemList] = useState([])
+    const [id, setId] = useState('')
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState('')
+    const [desc, setDesc] = useState('')
+    const [image, setImage] = useState('')
+    const [editOpen, setEditOpen] = useState(false)
+
 
     const getAllData = async () => {
         try {
@@ -16,6 +25,39 @@ const Item = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        switch (name) {
+            case 'name':
+                setName(value);
+                break;
+            case 'price':
+                const newValue = value.replace(/[^0-9]/g, '');
+                setPrice(formatNumber(newValue));
+                break;
+            case 'desc':
+                setDesc(value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const editItem = (item) => {
+        setId(item.id)
+        setName(item.item_name)
+        setPrice(formatNumber(item.price));
+        setDesc(item.description)
+        setEditOpen(true)
+        openModal('upsert')
+    }
+
+    const closeUpsert = () => {
+        closeModal('upsert')
+        // resetData()
     }
     
     useEffect(() => {
@@ -67,7 +109,7 @@ const Item = () => {
                                         <td className="px-4 py-3 text-sm">{item.image}</td>
                                         <td className="px-4 py-3 text-sm">{limitChar(item.description, 30)}</td>
                                         <td className="px-4 py-3">
-                                            <button htmlFor="upsert" className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-blue-700 hover:text-blue-800 focus:outline-none mr-4'>
+                                            <button onClick={() => editItem(item)} htmlFor="upsert" className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-blue-700 hover:text-blue-800 focus:outline-none mr-4'>
                                                 <FontAwesomeIcon icon={faPenToSquare} />
                                             </button>
                                             <button className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-red-700 hover:text-red-800 focus:outline-none'>
@@ -89,6 +131,27 @@ const Item = () => {
                     <Pagination/>
                 </div>
             </main>
+
+             {/* ===== upsert modal ===== */}
+             <BaseModal id='upsert' title='edit/update'>
+                <div className='grid gap-4 md:grid-cols-2'>
+                    <BaseInput name='name' value={name} onChange={handleChange} />
+                    <InputIcon icon='Rp.' name='price' value={price} onChange={handleChange} />
+                    <BaseInput name='image' value={image} onChange={handleChange} />
+                    {/* <div>
+                        <InputFile name='image' onChange={handleChangeImage} id='imageForm' accept='image/*' />
+                        {imageUrl && <img src={imageUrl} alt="preview" className='h-40 rounded-md mt-4' />}
+                    </div> */}
+                    <InputTextArea title='decription' name='desc' value={desc} onChange={handleChange} />
+                </div>
+                {/* <button onClick={cek} className='btn btn-sm'>cek</button> */}
+                <div className="modal-action pt-4">
+                    <label onClick={closeUpsert} className="btn btn-error capitalize mr-2">close</label>
+                    {/* <label onClick={upsertBazar} className="btn btn-info capitalize">{actionText}</label> */}
+                </div>
+            </BaseModal>
+
+
         </Adminpanel>
     )
 }
