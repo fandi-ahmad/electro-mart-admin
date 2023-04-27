@@ -17,6 +17,7 @@ const Item = () => {
     const [desc, setDesc] = useState('')
     const [image, setImage] = useState('')
     const [editOpen, setEditOpen] = useState(false)
+    const [actionText, setActionText] = useState('')
 
 
     const getAllData = async () => {
@@ -56,6 +57,7 @@ const Item = () => {
         setPrice(formatNumber(item.price));
         setImage(item.image)
         setDesc(item.description)
+        setActionText('update')
         setEditOpen(true)
         openModal('upsert')
     }
@@ -67,7 +69,7 @@ const Item = () => {
 
     const createNew = () => {
         resetData()
-        // setActionText('created')
+        setActionText('create')
         openModal('upsert')
     }
 
@@ -96,14 +98,6 @@ const Item = () => {
         }
     }
 
-    const cek = () => {
-        console.log('name', name)
-        console.log(price)
-        console.log('image', image)
-        console.log('desc', desc)
-    }
-
-    
     useEffect(() => {
         if (itemList.length === 0) {
             getAllData();
@@ -181,7 +175,7 @@ const Item = () => {
             </main>
 
              {/* ===== upsert modal ===== */}
-             <BaseModal id='upsert' title='edit/update'>
+             <BaseModal id='upsert' title={actionText + ' item'}>
                 <div className='grid gap-4 md:grid-cols-2'>
                     <BaseInput name='name' value={name} onChange={handleChange} />
                     <InputIcon icon='Rp.' name='price' value={price} onChange={handleChange} />
@@ -192,10 +186,9 @@ const Item = () => {
                     </div> */}
                     <InputTextArea title='decription' name='desc' value={desc} onChange={handleChange} />
                 </div>
-                {/* <button onClick={cek} className='btn btn-sm'>cek</button> */}
                 <div className="modal-action pt-4">
                     <label onClick={closeUpsert} className="btn btn-error capitalize mr-2">close</label>
-                    <label onClick={upsertItem} className="btn btn-info capitalize">create/update</label>
+                    <label onClick={upsertItem} className="btn btn-info capitalize">{actionText}</label>
                 </div>
             </BaseModal>
 
