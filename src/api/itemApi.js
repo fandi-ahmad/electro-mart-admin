@@ -29,3 +29,11 @@ export const CreateItem = (data) => {
         throw error;
     });
 }
+
+export const DeleteItem = (id) => {
+    return axios.delete(`${apiUrl}/api/item/${id}`, {headers})
+    .then(response => response.data)
+    .catch(error => {
+        throw error;
+    });
+}

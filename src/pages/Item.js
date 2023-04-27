@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
-import { GetItem, CreateItem } from '../api/itemApi'
+import { GetItem, CreateItem, DeleteItem } from '../api/itemApi'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal } from '../components/BaseModal'
@@ -98,11 +98,19 @@ const Item = () => {
         }
     }
 
+    const deleteItem = async (idItem) => {
+        try {
+            await DeleteItem(idItem)
+            getAllData()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         if (itemList.length === 0) {
             getAllData();
         }
-        console.log(itemList);
     }, [itemList])
 
     const limitChar = (params, value) => {
@@ -155,7 +163,7 @@ const Item = () => {
                                             <button onClick={() => editItem(item)} htmlFor="upsert" className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-blue-700 hover:text-blue-800 focus:outline-none mr-4'>
                                                 <FontAwesomeIcon icon={faPenToSquare} />
                                             </button>
-                                            <button className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-red-700 hover:text-red-800 focus:outline-none'>
+                                            <button onClick={() => deleteItem(item.id)} className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-red-700 hover:text-red-800 focus:outline-none'>
                                                 <FontAwesomeIcon icon={faTrash} />
                                             </button>
                                         </td>
