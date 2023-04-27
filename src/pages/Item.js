@@ -2,10 +2,11 @@ import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
 import { GetItem } from '../api/itemApi'
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal } from '../components/BaseModal'
 import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
+import { ButtonSm } from '../components/BaseButton'
 
 const Item = () => {
 
@@ -34,6 +35,9 @@ const Item = () => {
             case 'name':
                 setName(value);
                 break;
+            case 'image':
+                setImage(value);
+                break;
             case 'price':
                 const newValue = value.replace(/[^0-9]/g, '');
                 setPrice(formatNumber(newValue));
@@ -50,6 +54,7 @@ const Item = () => {
         setId(item.id)
         setName(item.item_name)
         setPrice(formatNumber(item.price));
+        setImage(item.image)
         setDesc(item.description)
         setEditOpen(true)
         openModal('upsert')
@@ -57,8 +62,24 @@ const Item = () => {
 
     const closeUpsert = () => {
         closeModal('upsert')
-        // resetData()
+        resetData()
     }
+
+    const createNew = () => {
+        resetData()
+        // setActionText('created')
+        openModal('upsert')
+    }
+
+    const resetData = () => {
+        setId('')
+        setName('')
+        setPrice('')
+        setImage('')
+        setDesc('')
+        setEditOpen(false)
+    }
+
     
     useEffect(() => {
         if (itemList.length === 0) {
@@ -81,8 +102,13 @@ const Item = () => {
 
     return (
         <Adminpanel>
-            <h2 className="mb-6 text-2xl font-semibold text-gray-700">Data Admin</h2>
-
+            <div className='mb-4 flex justify-between items-center'>
+                <h2 className="text-2xl font-semibold text-gray-700">Data Item</h2>
+                <ButtonSm onClick={createNew} >
+                    <span className='mr-2'>create</span>
+                    <FontAwesomeIcon icon={faPlus} />
+                </ButtonSm>
+            </div>
             {/* <!-- New Table --> */}
             <main className="w-full overflow-hidden rounded-lg shadow-xs">
                 <div className="w-full overflow-x-auto">
