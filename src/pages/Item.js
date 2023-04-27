@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
-import { GetItem } from '../api/itemApi'
+import { GetItem, CreateItem } from '../api/itemApi'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal } from '../components/BaseModal'
@@ -21,7 +21,7 @@ const Item = () => {
 
     const getAllData = async () => {
         try {
-            const response = await GetItem(1, 5)
+            const response = await GetItem(1, 100)
             setItemList(response.data)
         } catch (error) {
             console.log(error)
@@ -78,6 +78,29 @@ const Item = () => {
         setImage('')
         setDesc('')
         setEditOpen(false)
+    }
+
+    const upsertItem = async () => {
+        const parsePrice = parseInt(price.replaceAll(',', ''));
+        try {
+            const response = await CreateItem({
+                item_name: name,
+                price: parsePrice,
+                image: image,
+                description: desc
+            })
+            closeModal('upsert')
+            getAllData()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const cek = () => {
+        console.log('name', name)
+        console.log(price)
+        console.log('image', image)
+        console.log('desc', desc)
     }
 
     
@@ -172,7 +195,7 @@ const Item = () => {
                 {/* <button onClick={cek} className='btn btn-sm'>cek</button> */}
                 <div className="modal-action pt-4">
                     <label onClick={closeUpsert} className="btn btn-error capitalize mr-2">close</label>
-                    {/* <label onClick={upsertBazar} className="btn btn-info capitalize">{actionText}</label> */}
+                    <label onClick={upsertItem} className="btn btn-info capitalize">create/update</label>
                 </div>
             </BaseModal>
 
