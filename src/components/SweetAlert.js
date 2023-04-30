@@ -12,7 +12,7 @@ export const AlertError = (text) => {
     Swal.fire({
         icon: 'warning',
         title: 'Error!',
-        text: text
+        text: text || "Ups! something wrong"
     })
 }
 

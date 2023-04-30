@@ -86,7 +86,7 @@ const Item = () => {
     const upsertItem = async () => {
         try {
             if (name === '' || price === '' || image === '' || desc === '') {
-                AlertError('Input cannot be empty')
+                AlertError('Ups! something wrong')
             } else {
                 closeUpsert()
                 openModal('modal-loading')
@@ -110,7 +110,7 @@ const Item = () => {
             }
         } catch (error) {
             closeModal('modal-loading')
-            AlertError('Ups! something wrong')
+            AlertError()
         }
     }
 
