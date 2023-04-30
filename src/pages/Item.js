@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal, ModalLoading } from '../components/BaseModal'
 import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
 import { ButtonSm } from '../components/BaseButton'
-import { AlertError, AlertSuccess } from '../components/SweetAlert'
+import { AlertConfirm, AlertError, AlertSuccess } from '../components/SweetAlert'
 
 const Item = () => {
 
@@ -114,13 +114,29 @@ const Item = () => {
         }
     }
 
-    const deleteItem = async (idItem) => {
+    const confirmDeleteItem = async (idItem) => {
         try {
+            setActionText('Deleted')
+            openModal('modal-loading')
             await DeleteItem(idItem)
+
+            closeModal('modal-loading')
             getAllData()
+            AlertSuccess('Item has been deleted')
         } catch (error) {
-            console.log(error)
+            closeModal('modal-loading')
+            AlertError()
         }
+    }
+
+    const deleteItem = (idItem) => {
+        AlertConfirm({
+            title: 'Delete?',
+            confirmText: 'Yes, Delete It',
+            preConfirm: () => {
+                confirmDeleteItem(idItem)
+            }
+        })
     }
 
     useEffect(() => {
