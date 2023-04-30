@@ -1,12 +1,13 @@
 import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
-import { GetItem, CreateItem, DeleteItem } from '../api/itemApi'
+import { GetItem, CreateItem, DeleteItem, UpdateItem } from '../api/itemApi'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BaseModal, openModal, closeModal } from '../components/BaseModal'
+import { BaseModal, openModal, closeModal, ModalLoading } from '../components/BaseModal'
 import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
 import { ButtonSm } from '../components/BaseButton'
+import { AlertError, AlertSuccess } from '../components/SweetAlert'
 
 const Item = () => {
 
@@ -83,18 +84,33 @@ const Item = () => {
     }
 
     const upsertItem = async () => {
-        const parsePrice = parseInt(price.replaceAll(',', ''));
         try {
-            const response = await CreateItem({
-                item_name: name,
-                price: parsePrice,
-                image: image,
-                description: desc
-            })
-            closeModal('upsert')
-            getAllData()
+            if (name === '' || price === '' || image === '' || desc === '') {
+                AlertError('Input cannot be empty')
+            } else {
+                closeUpsert()
+                openModal('modal-loading')
+    
+                const parsePrice = parseInt(price.replaceAll(',', ''));
+                const sendJson = ({
+                    item_name: name,
+                    price: parsePrice,
+                    image: image,
+                    description: desc
+                })
+                if (id === '') {
+                    await CreateItem(sendJson)
+                } else {
+                    await UpdateItem(id, sendJson)
+                }
+
+                closeModal('modal-loading')
+                getAllData()
+                AlertSuccess(`Item has been ${actionText}`)
+            }
         } catch (error) {
-            console.log(error)
+            closeModal('modal-loading')
+            AlertError('Ups! something wrong')
         }
     }
 
@@ -199,6 +215,7 @@ const Item = () => {
                     <label onClick={upsertItem} className="btn btn-info capitalize">{actionText}</label>
                 </div>
             </BaseModal>
+            <ModalLoading id='modal-loading' title={actionText+' item'} />
 
 
         </Adminpanel>

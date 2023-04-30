@@ -30,6 +30,14 @@ export const CreateItem = (data) => {
     });
 }
 
+export const UpdateItem = (id, data) => {
+    return axios.patch(`${apiUrl}/api/item/${id}`, data, {headers})
+    .then(response => response.data)
+    .catch(error => {
+        throw error;
+    });
+}
+
 export const DeleteItem = (id) => {
     return axios.delete(`${apiUrl}/api/item/${id}`, {headers})
     .then(response => response.data)
