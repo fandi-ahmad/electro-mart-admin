@@ -6,7 +6,7 @@ import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal, ModalLoading } from '../components/BaseModal'
 import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
-import { ButtonSm } from '../components/BaseButton'
+import { ButtonGroup, ButtonSm } from '../components/BaseButton'
 import { AlertConfirm, AlertError, AlertSuccess } from '../components/SweetAlert'
 
 const Item = () => {
@@ -20,10 +20,13 @@ const Item = () => {
     const [editOpen, setEditOpen] = useState(false)
     const [actionText, setActionText] = useState('')
 
+    let [page, setPage] = useState(1)
+    let [limit, setLimit] = useState(3)
+
 
     const getAllData = async () => {
         try {
-            const response = await GetItem(1, 100)
+            const response = await GetItem(page, limit)
             setItemList(response.data)
         } catch (error) {
             console.log(error)
@@ -139,11 +142,13 @@ const Item = () => {
         })
     }
 
+    const cekData = () => {
+        console.log('page: ', page)
+    }
+
     useEffect(() => {
-        if (itemList.length === 0) {
-            getAllData();
-        }
-    }, [itemList])
+        getAllData();
+    }, [page, limit])
 
     const limitChar = (params, value) => {
         if (params.length > value) {
@@ -156,6 +161,7 @@ const Item = () => {
     const formatNumber = (number) => {
         return Number(number).toLocaleString();
     };
+
 
     return (
         <Adminpanel>
@@ -205,13 +211,16 @@ const Item = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
+                <button onClick={cekData}>get data</button>
+                <Pagination>
                     <span className="flex items-center col-span-3">
                         Showing 21-30 of 100
                     </span>
-                    <span className="col-span-2"></span>
-                    <Pagination/>
-                </div> */}
+                    <ButtonGroup
+                        leftClick={() => setPage(page-1)} rightClick={() => setPage(page+1)}
+                        middle='page 1 of 2'
+                    />
+                </Pagination>
             </main>
 
              {/* ===== upsert modal ===== */}

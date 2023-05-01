@@ -16,3 +16,22 @@ export const ButtonSm = (props) => {
         </button>
     )
 }
+
+export const ButtonGroup = (props) => {
+
+    const ButtonChild = ({onClick, text}) => {
+        return (
+            <button onClick={onClick} className="btn text-xs bg-gray-400 text-black hover:bg-gray-500 hover:outline-none hover:border-white focus:outline-none outline-none border-white">
+                {text}
+            </button>
+        )
+    }
+
+    return (
+        <div className="btn-group">
+            <ButtonChild onClick={props.leftClick} text={props.left || '«'}></ButtonChild>
+            <ButtonChild text={props.middle}></ButtonChild>
+            <ButtonChild onClick={props.rightClick} text={props.right || '»'}></ButtonChild>
+        </div>
+    )
+}
