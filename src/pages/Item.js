@@ -20,14 +20,22 @@ const Item = () => {
     const [editOpen, setEditOpen] = useState(false)
     const [actionText, setActionText] = useState('')
 
-    let [page, setPage] = useState(1)
-    let [limit, setLimit] = useState(3)
+    const [page, setPage] = useState(1)
+    const [limit, setLimit] = useState(6)
 
+    const [lastPage, setLastPage] = useState(null)
+    const [isPreviousBtn, setIsPreviousBtn] = useState(false)
+    const [isNextBtn, setIsNextBtn] = useState(false)
 
     const getAllData = async () => {
         try {
             const response = await GetItem(page, limit)
             setItemList(response.data)
+            setLastPage(response.meta.last_page)
+            
+            page > lastPage && lastPage != null ? setPage(lastPage) : setPage(page)
+            page == 1 ? setIsPreviousBtn(true) : setIsPreviousBtn(false)
+            page == lastPage ? setIsNextBtn(true) : setIsNextBtn(false)
         } catch (error) {
             console.log(error)
         }
@@ -130,6 +138,7 @@ const Item = () => {
             closeModal('modal-loading')
             AlertError()
         }
+        
     }
 
     const deleteItem = (idItem) => {
@@ -142,13 +151,9 @@ const Item = () => {
         })
     }
 
-    const cekData = () => {
-        console.log('page: ', page)
-    }
-
     useEffect(() => {
         getAllData();
-    }, [page, limit])
+    }, [page, limit, isPreviousBtn, isNextBtn, lastPage])
 
     const limitChar = (params, value) => {
         if (params.length > value) {
@@ -211,14 +216,14 @@ const Item = () => {
                         </tbody>
                     </table>
                 </div>
-                <button onClick={cekData}>get data</button>
                 <Pagination>
                     <span className="flex items-center col-span-3">
                         Showing 21-30 of 100
                     </span>
                     <ButtonGroup
+                        leftDisabled={isPreviousBtn} rightDisabled={isNextBtn}
                         leftClick={() => setPage(page-1)} rightClick={() => setPage(page+1)}
-                        middle='page 1 of 2'
+                        middle={`page ${page} of ${lastPage}`}
                     />
                 </Pagination>
             </main>

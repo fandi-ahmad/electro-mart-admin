@@ -19,9 +19,9 @@ export const ButtonSm = (props) => {
 
 export const ButtonGroup = (props) => {
 
-    const ButtonChild = ({onClick, text}) => {
+    const ButtonChild = ({onClick, disabled, text}) => {
         return (
-            <button onClick={onClick} className="btn text-xs bg-gray-400 text-black hover:bg-gray-500 hover:outline-none hover:border-white focus:outline-none outline-none border-white">
+            <button onClick={onClick} disabled={disabled} className="btn text-xs bg-gray-400 text-black hover:bg-gray-500 hover:outline-none hover:border-white focus:outline-none outline-none border-white">
                 {text}
             </button>
         )
@@ -29,9 +29,9 @@ export const ButtonGroup = (props) => {
 
     return (
         <div className="btn-group">
-            <ButtonChild onClick={props.leftClick} text={props.left || '«'}></ButtonChild>
-            <ButtonChild text={props.middle}></ButtonChild>
-            <ButtonChild onClick={props.rightClick} text={props.right || '»'}></ButtonChild>
+            <ButtonChild disabled={props.leftDisabled || false} onClick={props.leftClick} text={props.left || '«'} />
+            <ButtonChild text={props.middle} />
+            <ButtonChild disabled={props.rightDisabled || false} onClick={props.rightClick} text={props.right || '»'} />
         </div>
     )
 }
