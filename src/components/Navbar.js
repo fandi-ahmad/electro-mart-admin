@@ -37,18 +37,21 @@ export const Navbar = () => {
                     </li>
 
                     <li className="dropdown dropdown-end cursor-pointer">
-                        <img className="object-cover w-8 h-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-                            alt="" tabIndex={1}
-                        />
-                        {/* <ul tabIndex={1} className="dropdown-content menu p-2 shadow bg-white border-gray-100 text-gray-600 rounded-lg w-52">
-                            <li className='font-semibold'>
-                                <a onClick={logOut}>
-                                    <FontAwesomeIcon icon={faRightFromBracket} />
-                                    Log out
-                                </a>
-                            </li>
-                        </ul> */}
+                        <div className="dropdown dropdown-end">
+                            <img className="object-cover w-8 h-8 rounded-full"
+                                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                                alt="" tabIndex={0}
+                            />
+                            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-white  border-gray-100 text-gray-600 rounded-lg w-52">
+                                <li>
+                                    <a onClick={logOut}>
+                                        <FontAwesomeIcon icon={faRightFromBracket} />
+                                        Log out
+                                    </a>
+                                </li>
+                                <li><a>Item 2</a></li>
+                            </ul>
+                        </div>
                     </li>
 
                 </ul>
