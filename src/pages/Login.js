@@ -1,7 +1,7 @@
 import { React, useState }from 'react'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { Link, useNavigate } from 'react-router-dom'
-// import { LoginUser } from '../api/Auth'
+import { LoginUser } from '../api/authApi'
 import { AlertSuccess, AlertError } from '../components/SweetAlert'
 import { ModalLoading, openModal, closeModal } from '../components/BaseModal'
 import { ButtonMd } from '../components/BaseButton'
@@ -33,29 +33,28 @@ const Login = () => {
         setPassword('')
     }
 
-    // const loginAccount = async () => {
-    //     try {
-    //         openModal('modal-loading')
-    //         if (email === '' || password === '') {
-    //             AlertError('Input cannot be empty')
-    //         } else {
-    //             const response = await LoginUser({
-    //                 email: email,
-    //                 password: password
-    //             })
-    //             resetData()
-    //             if (response.code === 401) {
-    //                 AlertError('Email or password is wrong')
-    //             } else {
-    //                 AlertSuccess('Loggin in successfully')
-    //                 navigate('/')
-    //             }
-    //         }
-    //         closeModal('modal-loading')
-    //     } catch (error) {
-    //         AlertError('Ups, something wrong!')
-    //     }
-    // }
+    const loginAccount = async () => {
+        openModal('modal-loading')
+        try {
+            if (email === '' || password === '') {
+                AlertError('Input cannot be empty')
+            } else {
+                const response = await LoginUser({
+                    email: email,
+                    password: password,
+                    password_confirmation: password
+                })
+                const token = response.type + ' ' + response.token
+                localStorage.setItem('userToken', token)
+                AlertSuccess('Loggin in successfully')
+                navigate('/')
+            }
+        } catch (error) {
+            AlertError('Email or password is wrong')
+        }
+        resetData()
+        closeModal('modal-loading')
+    }
 
     return (
         <AuthLayout>
@@ -69,17 +68,14 @@ const Login = () => {
                 </h1>
                 <label className="block text-sm">
                     <span className="text-gray-700">Email</span>
-                    {/* <input name='email' value={email} onChange={handleChange} type='email' placeholder="Your email" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" /> */}
-                    <input name='email' value={email} type='email' placeholder="Your email" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" />
+                    <input name='email' value={email} onChange={handleChange} type='email' placeholder="Your email" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" />
                 </label>
                 <label className="block mt-4 text-sm">
                     <span className="text-gray-700">Password</span>
-                    {/* <input name='password' value={password} onChange={handleChange} type="password" placeholder="***************" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" /> */}
-                    <input name='password' value={password} type="password" placeholder="***************" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" />
+                    <input name='password' value={password} onChange={handleChange} type="password" placeholder="********" autoComplete='off' className="block w-full mt-1 text-sm text-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" />
                 </label>
 
-                {/* <ButtonMd onClick={loginAccount}>Log in</ButtonMd> */}
-                <ButtonMd >Log in</ButtonMd>
+                <ButtonMd onClick={loginAccount}>Log in</ButtonMd>
 
                 <hr className="my-8" />
 

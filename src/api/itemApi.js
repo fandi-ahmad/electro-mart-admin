@@ -1,20 +1,8 @@
 import axios from "axios";
 const apiUrl = 'http://127.0.0.1:3333'
-const token = 'Mg.6W9D4F5lFV5PIpq-WTYANX89Z_haoQigMkFCh-r8q9Rq3lJUg1druzKW3AxM'
-
-export const LoginUser = () => {
-    return axios.post(`${apiUrl}/api/login`)
-    .then(response => response.data)
-    .catch(error => {
-        throw error;
-    });
-}
-
-const headers = {
-    'Authorization': 'Bearer ' + token
-};
 
 export const GetItem = (page, limit) => {
+    const headers = { 'Authorization': localStorage.getItem('userToken') }
     return axios.get(`${apiUrl}/api/item?page=${page}&limit=${limit}`, {headers})
     .then(response => response.data)
     .catch(error => {
@@ -23,6 +11,7 @@ export const GetItem = (page, limit) => {
 }
 
 export const CreateItem = (data) => {
+    const headers = { 'Authorization': localStorage.getItem('userToken') }
     return axios.post(`${apiUrl}/api/item`, data, {headers})
     .then(response => response.data)
     .catch(error => {
@@ -31,6 +20,7 @@ export const CreateItem = (data) => {
 }
 
 export const UpdateItem = (id, data) => {
+    const headers = { 'Authorization': localStorage.getItem('userToken') }
     return axios.patch(`${apiUrl}/api/item/${id}`, data, {headers})
     .then(response => response.data)
     .catch(error => {
@@ -39,6 +29,7 @@ export const UpdateItem = (id, data) => {
 }
 
 export const DeleteItem = (id) => {
+    const headers = { 'Authorization': localStorage.getItem('userToken') }
     return axios.delete(`${apiUrl}/api/item/${id}`, {headers})
     .then(response => response.data)
     .catch(error => {
