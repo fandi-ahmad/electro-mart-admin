@@ -16,6 +16,7 @@ const RoutesTemplate = () => {
 
   useEffect(() => {
     checkUser()
+    document.title = 'Electro App'
   }, [])
 
   return (
