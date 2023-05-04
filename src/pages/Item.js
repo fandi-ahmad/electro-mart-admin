@@ -1,13 +1,14 @@
 import { React, useEffect, useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Adminpanel } from '../layouts/Adminpanel'
-import { GetItem, CreateItem, DeleteItem, UpdateItem } from '../api/itemApi'
+import { GetItem, CreateItem, DeleteItem, UpdateItem, GetItemImage, exportApi } from '../api/itemApi'
 import { faPenToSquare, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { BaseModal, openModal, closeModal, ModalLoading } from '../components/BaseModal'
 import { BaseInput, InputIcon, InputTextArea } from '../components/BaseInput'
 import { ButtonGroup, ButtonSm } from '../components/BaseButton'
 import { AlertConfirm, AlertError, AlertSuccess } from '../components/SweetAlert'
+import { BaseImage } from '../components/BaseImage'
 
 const Item = () => {
 
@@ -21,7 +22,7 @@ const Item = () => {
     const [actionText, setActionText] = useState('')
 
     const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(6)
+    const [limit, setLimit] = useState(20)
 
     const [lastPage, setLastPage] = useState(null)
     const [isPreviousBtn, setIsPreviousBtn] = useState(false)
@@ -38,6 +39,19 @@ const Item = () => {
             page == lastPage ? setIsNextBtn(true) : setIsNextBtn(false)
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const getImageById = async (id) => {
+        try {
+            // const response = await GetItemImage(id)
+            // console.log(response)
+            // setImage(response)
+            // setImage(GetItemImage(id))
+            console.log(image)
+        } catch (error) {
+            console.log(error)
+            console.log(image)
         }
     }
 
@@ -167,6 +181,8 @@ const Item = () => {
         return Number(number).toLocaleString();
     };
 
+    const imageUrl = 'http://127.0.0.1:3333/api/item/image'
+    const token = 'MQ.m4JtWeDxHh4DCNL0z1uTOd8Wu-WJFUV0vLVP02ISdDjMeE9WUNxMFsewmmjJ'
 
     return (
         <Adminpanel>
@@ -200,7 +216,9 @@ const Item = () => {
                                             <p className="font-semibold">{limitChar(item.item_name, 20)}</p>
                                         </td>
                                         <td className="px-4 py-3 text-sm">Rp {formatNumber(item.price)}</td>
-                                        <td className="px-4 py-3 text-sm">{item.image}</td>
+                                        <td className="px-4 py-3 text-sm">
+                                            <BaseImage imageUrl={`${imageUrl}/${item.id}`} token={token} />
+                                        </td>
                                         <td className="px-4 py-3 text-sm">{limitChar(item.description, 30)}</td>
                                         <td className="px-4 py-3">
                                             <button onClick={() => editItem(item)} htmlFor="upsert" className='btn btn-sm p-0 text-2xl border-0 bg-transparent hover:bg-transparent text-blue-700 hover:text-blue-800 focus:outline-none mr-4'>

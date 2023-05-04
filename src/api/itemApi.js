@@ -10,6 +10,15 @@ export const GetItem = (page, limit) => {
     });
 }
 
+export const GetItemImage = (id) => {
+    const headers = { 'Authorization': localStorage.getItem('userToken') }
+    return axios.get(`${apiUrl}/api/item/image/${id}`, {headers})
+    .then(response => response.data)
+    .catch(error => {
+        throw error;
+    });
+}
+
 export const CreateItem = (data) => {
     const headers = { 'Authorization': localStorage.getItem('userToken') }
     return axios.post(`${apiUrl}/api/item`, data, {headers})
