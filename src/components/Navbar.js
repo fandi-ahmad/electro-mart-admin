@@ -12,6 +12,7 @@ export const Navbar = () => {
             title: 'Log Out',
             text: 'Do you want to log out?',
             preConfirm: () => {
+                localStorage.removeItem('userToken')
                 navigate('/login')
             }
         })
